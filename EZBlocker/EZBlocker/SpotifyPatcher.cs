@@ -46,13 +46,14 @@ namespace EZBlocker
                 File.WriteAllText(Path.Combine(workingDir, "worker.js"), worker);
 
                 // Patch index
+                System.Text.Encoding enc = System.Text.Encoding.GetEncoding("windows-1252");
                 string patchFile = Path.Combine(workingDir, "index.html");
-                string contents = File.ReadAllText(patchFile, System.Text.Encoding.UTF8);
+                string contents = File.ReadAllText(patchFile, enc);
                 foreach (KeyValuePair<string, string> patch in patches)
                 {
                     contents = contents.Replace(patch.Key, patch.Value);
                 }
-                File.WriteAllText(patchFile, contents, System.Text.Encoding.UTF8);
+                File.WriteAllText(patchFile, contents, enc);
 
                 string patchedPath = Path.Combine(tmpPath, "zlink.spa");
                 File.Delete(patchedPath);
