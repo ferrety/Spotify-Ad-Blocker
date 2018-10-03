@@ -57,6 +57,7 @@ namespace EZBlocker
 
                 string patchedPath = Path.Combine(tmpPath, "zlink.spa");
                 File.Delete(patchedPath);
+                ICSharpCode.SharpZipLib.Zip.ZipConstants.DefaultCodePage = 437;
                 ZipCompress(patchedPath, workingDir);
 
                 File.Replace(patchedPath, targetPath, backupPath);
