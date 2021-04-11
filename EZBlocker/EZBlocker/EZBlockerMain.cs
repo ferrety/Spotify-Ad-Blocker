@@ -16,7 +16,7 @@ namespace EZBlocker
 {
     public partial class Main : Form
     {
-        private bool muted = false;
+        private bool? muted = null;
         private string lastMessage = "";
         private ToolTip artistTooltip = new ToolTip();
 
@@ -48,16 +48,19 @@ namespace EZBlocker
             try {
                 if (hook.IsRunning())
                 {
+                    if (muted == null)
+                    {
+                        muted = AudioUtils.IsMuted(hook.VolumeControl.Control);
+                    }
                     if (hook.IsAdPlaying())
                     {
                         if (MainTimer.Interval != 1000) MainTimer.Interval = 1000;
-                        if (!muted) Mute(true);
+                        if (muted == false) Mute(true);
                         if (!hook.IsPlaying())
                         {
                             AudioUtils.SendNextTrack(hook.Handle == IntPtr.Zero ? Handle : hook.Handle);
                             Thread.Sleep(500);
                         }
-
                         string artist = hook.GetArtist();
                         string message = Properties.strings.StatusMuting + " " + Truncate(artist);
                         if (lastMessage != message)
@@ -70,7 +73,7 @@ namespace EZBlocker
                     }
                     else if (hook.IsPlaying() && !hook.WindowName.Equals("Spotify Free")) // Normal music
                     {
-                        if (muted)
+                        if (muted == true)
                         {
                             Thread.Sleep(500); // Give extra time for ad to change out
                             Mute(false);
