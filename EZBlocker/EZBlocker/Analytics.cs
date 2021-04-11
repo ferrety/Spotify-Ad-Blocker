@@ -50,10 +50,11 @@ namespace EZBlocker
                 { "dp", action },
             };
 
-            var content = new FormUrlEncodedContent(data);
-            var resp = await client.PostAsync(url, content);
+            // var content = new FormUrlEncodedContent(data);
+            // var resp = await client.PostAsync(url, content);
 
-            return resp.IsSuccessStatusCode;
+            // return resp.IsSuccessStatusCode;
+            return true;
         }
     }
 }
